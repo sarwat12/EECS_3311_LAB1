@@ -31,11 +31,11 @@ feature -- Constructor
 		require
 			enough_capacity:
 				-- TODO: What's the relation between size of `a` and `n`?
-				True
+				a.count <= n
 
 			all_positive:
 				-- TODO: All keys to be added to the heap should be strictly positive.
-				True
+				across 1 |..| a.count is i all a[i] >= 0 end
 
 			no_duplicates:
 				-- TODO: No duplicates of keys are to be added to the heap.
@@ -46,7 +46,7 @@ feature -- Constructor
 			-- Be sure to initialize `max_capacity` and `count` properly.
 			-- Hint: Make use of the `heapify` command.
 			-- Watch out for infinite loops!
-			
+
 		ensure
 			max_capacity_set:
 				-- Completed for you. Do not modify.

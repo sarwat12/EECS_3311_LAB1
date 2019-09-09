@@ -41,7 +41,7 @@ feature -- Constructors
 			-- but encouraged to try it for exercise.
 		do
 			-- TODO: Complete the implementation.
-			
+
 		ensure
 			scheduler_size_set:
 				-- Completed for you. Do not modify.
