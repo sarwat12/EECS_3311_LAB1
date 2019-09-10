@@ -39,14 +39,19 @@ feature -- Constructor
 
 			no_duplicates:
 				-- TODO: No duplicates of keys are to be added to the heap.
-				True
+			   	across 1 |..| a.count is i some a[i] = a[i] end
 		do
 			-- TODO: Initialize `array` such that it represents a binary tree
 			-- satisfying the maximum heap property.
 			-- Be sure to initialize `max_capacity` and `count` properly.
 			-- Hint: Make use of the `heapify` command.
 			-- Watch out for infinite loops!
-
+			count := a.count
+			max_capacity := n
+			create array.make_empty
+			array.grow (max_capacity)
+			array.subcopy (a, a.lower, a.upper, array.lower)
+			array.make_filled (0, count + 1, max_capacity)
 		ensure
 			max_capacity_set:
 				-- Completed for you. Do not modify.
