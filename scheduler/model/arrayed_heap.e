@@ -39,7 +39,7 @@ feature -- Constructor
 
 			no_duplicates:
 				-- TODO: No duplicates of keys are to be added to the heap.
-			   	across 1 |..| a.count is i some a[i] = a[i] end
+			   	--across 1 |..| a.count is i some a.has (a[i]) end
 		do
 			-- TODO: Initialize `array` such that it represents a binary tree
 			-- satisfying the maximum heap property.
