@@ -39,19 +39,29 @@ feature -- Constructor
 
 			no_duplicates:
 				-- TODO: No duplicates of keys are to be added to the heap.
-			   	--across 1 |..| a.count is i some a.has (a[i]) end
+			   	not (across a.lower |..| (a.upper - 1) is i
+			   		all
+			   			across (a.lower + 1) |..| a.upper is j
+				   			some
+								a[i] ~ a[j]
+				   	end
+			   	end)
 		do
 			-- TODO: Initialize `array` such that it represents a binary tree
 			-- satisfying the maximum heap property.
 			-- Be sure to initialize `max_capacity` and `count` properly.
 			-- Hint: Make use of the `heapify` command.
 			-- Watch out for infinite loops!
-			count := a.count
-			max_capacity := n
-			create array.make_empty
-			array.grow (max_capacity)
-			array.subcopy (a, a.lower, a.upper, array.lower)
-			array.make_filled (0, count + 1, max_capacity)
+			count := a.count --Number of filled keys
+			max_capacity := n --Maximum capacity of array
+			create array.make_filled (0, 1, max_capacity) --Creating an initial array of size 'max_capacity' with all values set to '0'
+			array.subcopy (a, a.lower, a.upper, 1) --Copying elements of 'a' to 'array'
+
+			--Creating max heap array by applying heapify
+			across (array.upper // 2) |..| array.lower is i
+			loop
+				heapify (i)
+			end
 		ensure
 			max_capacity_set:
 				-- Completed for you. Do not modify.
@@ -73,6 +83,7 @@ feature -- Commands
 		do
 			-- TODO: Complete the implementation.
 			-- Watch out for infinite loops!
+			
 
 		ensure
 			-- Heap property is maintained, see invariant `heap_property`.
@@ -178,7 +189,7 @@ feature -- Queries related to binary trees
 			-- No precondition or postcondition is needed.
 		do
 			-- TODO: Complete the implementation.
-
+			Result := i >= 1 and i <= count
 		end
 
 	has_left_child (i: INTEGER): BOOLEAN
