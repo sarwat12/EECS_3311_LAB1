@@ -83,7 +83,7 @@ feature -- Commands
 		do
 			-- TODO: Complete the implementation.
 			-- Watch out for infinite loops!
-			
+
 
 		ensure
 			-- Heap property is maintained, see invariant `heap_property`.
@@ -165,7 +165,7 @@ feature -- Queries related to heaps
 			-- No precondition or postcondition is needed.
 		do
 			-- TODO: Complete the implementation.
-
+			Result := count = 0
 		end
 
 	key_exists (a_key: INTEGER): BOOLEAN
@@ -174,7 +174,7 @@ feature -- Queries related to heaps
 			-- No precondition is needed.
 		do
 			-- TODO: Complete the implementation.
-
+			Result := across array.lower |..| array.upper is i some array[i] ~ a_key end
 		ensure
 			correct_result:
 				-- TODO: Constraint on the return value `Result`
@@ -216,7 +216,7 @@ feature -- Queries related to binary trees
 			-- No precondition or postcondition is needed.
 		do
 			-- TODO: Complete the implementation.
-
+			Result := is_valid_index (i // 2)
 		end
 
 	left_child_of (i: INTEGER): INTEGER
@@ -230,7 +230,7 @@ feature -- Queries related to binary trees
 				has_left_child (i)
 		do
 			-- TODO: Complete the implementation.
-
+			Result := array[i * 2]
 		end
 
 	right_child_of (i: INTEGER): INTEGER
@@ -244,7 +244,7 @@ feature -- Queries related to binary trees
 				has_right_child (i)
 		do
 			-- TODO: Complete the implementation.
-
+			Result := array[(i * 2) + 1]
 		end
 
 	parent_of (i: INTEGER): INTEGER
@@ -258,7 +258,7 @@ feature -- Queries related to binary trees
 				i /= 1
 		do
 			-- TODO: Complete the implementation.
-
+			Result := array[i // 2]
 		end
 
 	maximum: INTEGER
@@ -269,11 +269,11 @@ feature -- Queries related to binary trees
 				not is_empty
 		do
 			-- TODO: Complete the implementation.
-
+			Result := array[1]
 		ensure
 			correct_result:
 				-- TODO: The return value `Result` is the maximum integer key.
-				True
+				 across array.lower |..| array.upper is i all array[i] <= Result end
 		end
 
 	is_a_max_heap (i: INTEGER): BOOLEAN
@@ -284,17 +284,27 @@ feature -- Queries related to binary trees
 				is_valid_index (i)
 		do
 			-- TODO: Complete the implementation.
-
+			if
+				has_left_child (i) and has_right_child (i)
+			then
+				Result := array[i] > left_child_of (i) and array[i] > right_child_of (i)
+			elseif
+				has_left_child (i)
+			then
+				Result := array[i] > left_child_of (i)
+			else
+				Result := True
+			end
 		ensure
 			case_of_no_children:
 				-- TODO: When index `i` denotes an external node, what happens to `Result`?
-				True
+				i > (array.upper // 2) and i <= array.upper
 			case_of_two_children:
 				-- TODO: When index `i` denotes an internal node with both children, what happens to `Result`?
-				True
+				array[i] > left_child_of (i) and array[i] > right_child_of (i)
 			case_of_one_child:
 				-- TODO: When index `i` denotes an internal node with only one child, what happens to `Result`?
-				True
+				array[i] > left_child_of (i)
 		end
 
 invariant
