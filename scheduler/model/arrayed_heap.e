@@ -80,10 +80,39 @@ feature -- Commands
 			valid_index:
 				-- Completed for you. Do not modify.
 				is_valid_index (i)
+		local
+			largest, left_index, right_index, swap: INTEGER
 		do
 			-- TODO: Complete the implementation.
 			-- Watch out for infinite loops!
+			largest := i
+			left_index := 2 * i
+			right_index := (2 * i) + 1
+			if
+				has_left_child (i) and left_child_of (i) > array[largest]
+			then
+				largest := left_index
+			end
 
+			if
+				has_right_child (i) and right_child_of (i) > array[largest]
+			then
+				largest := right_index
+			end
+
+			if
+				largest /= i
+			then
+				swap := array[i]
+				array[i] := array[largest]
+				array[largest] := swap
+
+				if
+					is_valid_index (largest)
+				then
+					heapify (largest)
+				end
+			end
 
 		ensure
 			-- Heap property is maintained, see invariant `heap_property`.
@@ -91,7 +120,7 @@ feature -- Commands
 			same_set_of_keys:
 				-- TODO: old and new versions of `array` store the same set of integer keys.
 				-- Hint: You may want to make use of the `is_permutation_of` query.
-				True
+				is_permutation_of (array.subarray (i, count), old array.subarray (i, count))
 		end
 
 	insert (new_key: INTEGER)
@@ -100,16 +129,29 @@ feature -- Commands
 			non_existing_key:
 				-- Completed for you. Do not modify.
 				not key_exists (new_key)
+		local
+			index, swap : INTEGER
 		do
 			-- TODO: Complete the implementation.
 			-- Watch out for infinite loops!
-
+			count := count + 1
+			array[count] := new_key
+			from
+				index := count
+			until
+				array[index] < array[index // 2]
+			loop
+				swap := array[index]
+				array[index] := array[index // 2]
+				array[index //2] := swap
+				index := index // 2
+			end
 		ensure
 			-- Heap property is maintained, see invariant `heap_property`.
 
 			size_incremented:
 				-- TODO: Constraint on `count`
-				True
+				count = old count + 1
 
 			same_set_of_keys_except_the_new_key:
 				-- TODO: Except `new_key` being just added,
@@ -123,17 +165,26 @@ feature -- Commands
 			non_empty_heap:
 				-- Completed for you. Do not modify.
 				not is_empty
+		local
+			swap : INTEGER
 		do
 			-- TODO: Complete the implementation.
 			-- Hint: Make use of the `heapify` command.
 			-- Watch out for infinite loops!
+			swap := array[1]
+			array[1] := array[count]
+			array[count] := swap
+
+			count := count - 1
+
+			heapify (1)
 
 		ensure
 			-- Heap property is maintained, see invariant `heap_property`.
 
 			size_decremented:
 				-- TODO: Constraint on `count`
-				True
+				count = old count - 1
 
 			same_set_of_keys_except_the_removed_key:
 				-- TODO: Except the key being just removed,
@@ -152,9 +203,25 @@ feature -- Auxiliary queries for writing contracts
 			-- there are all zeros from indices `count` + 1 to `max_capacity`.
 
 			-- No precondition or postcondition is needed.
+		local
+			mult1, mult2, sum1, sum2 : INTEGER
 		do
 			-- TODO: Complete the implementation.
-
+			mult1 := 1
+			mult2 := 1
+			sum1 := 0
+			sum2 := 0
+			across a1.lower |..| a1.count is i
+			loop
+				mult1 := mult1 * array[i]
+				sum1 := sum1 + array[i]
+			end
+			across a2.lower |..| a2.count is j
+			loop
+				mult2 := mult2 * array[j]
+				sum2 := sum2 + array[j]
+			end
+			Result := mult1 = mult2 and sum1 = sum2
 		end
 
 feature -- Queries related to heaps
@@ -174,11 +241,11 @@ feature -- Queries related to heaps
 			-- No precondition is needed.
 		do
 			-- TODO: Complete the implementation.
-			Result := across array.lower |..| array.upper is i some array[i] ~ a_key end
+			Result := across 1 |..| count is i some array[i] ~ a_key end
 		ensure
 			correct_result:
 				-- TODO: Constraint on the return value `Result`
-				True
+				across 1 |..| count is i some array[i] ~ a_key end
 		end
 
 feature -- Queries related to binary trees
@@ -198,7 +265,7 @@ feature -- Queries related to binary trees
 			-- No precondition or postcondition is needed.
 		do
 			-- TODO: Complete the implementation.
-
+			Result := is_valid_index (i * 2)
 		end
 
 	has_right_child (i: INTEGER): BOOLEAN
@@ -207,7 +274,7 @@ feature -- Queries related to binary trees
 			-- No precondition or postcondition is needed.
 		do
 			-- TODO: Complete the implementation.
-
+			Result := is_valid_index ((i * 2) + 1)
 		end
 
 	has_parent (i: INTEGER): BOOLEAN
@@ -273,7 +340,7 @@ feature -- Queries related to binary trees
 		ensure
 			correct_result:
 				-- TODO: The return value `Result` is the maximum integer key.
-				 across array.lower |..| array.upper is i all array[i] <= Result end
+				 across 1 |..| count is i all array[i] <= Result end
 		end
 
 	is_a_max_heap (i: INTEGER): BOOLEAN
@@ -289,7 +356,7 @@ feature -- Queries related to binary trees
 			then
 				Result := array[i] > left_child_of (i) and array[i] > right_child_of (i)
 			elseif
-				has_left_child (i)
+				has_left_child (i) and not has_right_child (i)
 			then
 				Result := array[i] > left_child_of (i)
 			else
@@ -298,13 +365,13 @@ feature -- Queries related to binary trees
 		ensure
 			case_of_no_children:
 				-- TODO: When index `i` denotes an external node, what happens to `Result`?
-				i > (array.upper // 2) and i <= array.upper
+				not has_left_child (i) and not has_right_child (i)
 			case_of_two_children:
 				-- TODO: When index `i` denotes an internal node with both children, what happens to `Result`?
-				array[i] > left_child_of (i) and array[i] > right_child_of (i)
+				has_left_child (i) and has_right_child (i)
 			case_of_one_child:
 				-- TODO: When index `i` denotes an internal node with only one child, what happens to `Result`?
-				array[i] > left_child_of (i)
+				has_left_child (i) and not has_right_child (i)
 		end
 
 invariant
