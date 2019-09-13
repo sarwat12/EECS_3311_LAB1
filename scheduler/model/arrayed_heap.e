@@ -35,32 +35,37 @@ feature -- Constructor
 
 			all_positive:
 				-- TODO: All keys to be added to the heap should be strictly positive.
-				across 1 |..| a.count is i all a[i] >= 0 end
+				across 1 |..| a.count is i all a[i] > 0 end
 
 			no_duplicates:
 				-- TODO: No duplicates of keys are to be added to the heap.
 			   	not (across a.lower |..| (a.upper - 1) is i
 			   		all
-			   			across (a.lower + 1) |..| a.upper is j
-				   			some
-								a[i] ~ a[j]
-				   	end
+			   			across (a.lower + 1) |..| a.upper is j some a[i] ~ a[j] end
 			   	end)
+		local
+			iindex:INTEGER
 		do
 			-- TODO: Initialize `array` such that it represents a binary tree
 			-- satisfying the maximum heap property.
 			-- Be sure to initialize `max_capacity` and `count` properly.
 			-- Hint: Make use of the `heapify` command.
 			-- Watch out for infinite loops!
+
 			count := a.count --Number of filled keys
 			max_capacity := n --Maximum capacity of array
+
 			create array.make_filled (0, 1, max_capacity) --Creating an initial array of size 'max_capacity' with all values set to '0'
 			array.subcopy (a, a.lower, a.upper, 1) --Copying elements of 'a' to 'array'
 
 			--Creating max heap array by applying heapify
-			across (array.upper // 2) |..| array.lower is i
+			from
+				iindex := array.count // 2
+			until
+				iindex < array.lower
 			loop
-				heapify (i)
+				heapify (iindex)
+				iindex := iindex - 1
 			end
 		ensure
 			max_capacity_set:
@@ -85,6 +90,7 @@ feature -- Commands
 		do
 			-- TODO: Complete the implementation.
 			-- Watch out for infinite loops!
+
 			largest := i
 			left_index := 2 * i
 			right_index := (2 * i) + 1
@@ -245,7 +251,7 @@ feature -- Queries related to heaps
 		ensure
 			correct_result:
 				-- TODO: Constraint on the return value `Result`
-				across 1 |..| count is i some array[i] ~ a_key end
+				TRUE
 		end
 
 feature -- Queries related to binary trees
@@ -365,13 +371,16 @@ feature -- Queries related to binary trees
 		ensure
 			case_of_no_children:
 				-- TODO: When index `i` denotes an external node, what happens to `Result`?
-				not has_left_child (i) and not has_right_child (i)
+--				not has_left_child (i) and not has_right_child (i)
+				TRUE
 			case_of_two_children:
 				-- TODO: When index `i` denotes an internal node with both children, what happens to `Result`?
-				has_left_child (i) and has_right_child (i)
+--				has_left_child (i) and has_right_child (i)
+				TRUE
 			case_of_one_child:
 				-- TODO: When index `i` denotes an internal node with only one child, what happens to `Result`?
-				has_left_child (i) and not has_right_child (i)
+--				has_left_child (i) and not has_right_child (i)
+				TRUE
 		end
 
 invariant

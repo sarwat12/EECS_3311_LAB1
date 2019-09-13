@@ -39,8 +39,7 @@ feature -- Tests
 			-- Add your own test on heap and scheduler.
 			create h.make (<<4, 1, 3, 2, 16, 9, 10, 14, 8, 7>>, 15)
 			print(h.array)
-			--h.array ~ <<16, 14, 10, 8, 7, 9, 3, 2, 4, 1, 0, 0, 0, 0, 0>>
-			Result := 
+			Result := h.array ~ <<16, 14, 10, 8, 7, 9, 3, 2, 4, 1, 0, 0, 0, 0, 0>>
 		end
 
 --	t2: BOOLEAN

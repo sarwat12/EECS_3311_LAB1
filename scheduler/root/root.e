@@ -24,8 +24,8 @@ feature {NONE} -- Initialization
 	make
 			-- Run app
 		do
-			--add_test (create {INSTRUCTOR_TESTS}.make) --suite of tests
-			add_test (create {STUDENT_TESTS}.make) -- your own tests
+			add_test (create {INSTRUCTOR_TESTS}.make) --suite of tests
+			--add_test (create {STUDENT_TESTS}.make) -- your own tests
 			show_browser
 			run_espec
 		end
