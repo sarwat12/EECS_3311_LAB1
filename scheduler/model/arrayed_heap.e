@@ -171,20 +171,15 @@ feature -- Commands
 			non_empty_heap:
 				-- Completed for you. Do not modify.
 				not is_empty
-		local
-			swap : INTEGER
 		do
 			-- TODO: Complete the implementation.
 			-- Hint: Make use of the `heapify` command.
 			-- Watch out for infinite loops!
-			swap := array[1]
 			array[1] := array[count]
-			array[count] := swap
-
+			array[count] := 0
 			count := count - 1
 
 			heapify (1)
-
 		ensure
 			-- Heap property is maintained, see invariant `heap_property`.
 
