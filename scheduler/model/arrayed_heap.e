@@ -4,6 +4,9 @@ note
 	date: "$Date$"
 	revision: "$Revision$"
 
+--TODO: is a max heap postcondition; insert potcondition; remove maximum postcondition
+
+
 class
 	ARRAYED_HEAP
 
@@ -140,8 +143,9 @@ feature -- Commands
 		do
 			-- TODO: Complete the implementation.
 			-- Watch out for infinite loops!
-			count := count + 1
-			array[count] := new_key
+			count := count + 1 --Increasing count
+			array[count] := new_key  --Adding new key to the end of the array
+			--Restoring the heap property using uphead
 			from
 				index := count
 			until
@@ -162,7 +166,8 @@ feature -- Commands
 			same_set_of_keys_except_the_new_key:
 				-- TODO: Except `new_key` being just added,
 				-- all other keys in the new `array` already exist in the old `array`.
-				True
+				--across 1 |..| old array.count is i all key_exists (old array[i]) end
+				TRUE
 		end
 
 	remove_maximum
@@ -175,11 +180,11 @@ feature -- Commands
 			-- TODO: Complete the implementation.
 			-- Hint: Make use of the `heapify` command.
 			-- Watch out for infinite loops!
-			array[1] := array[count]
-			array[count] := 0
-			count := count - 1
+			array[1] := array[count]   --Swapping the root element with the last element
+			array[count] := 0 --Setting the deleted key with a value of '0'
+			count := count - 1 --Decreasing count
 
-			heapify (1)
+			heapify (1) --Restoring the heap property
 		ensure
 			-- Heap property is maintained, see invariant `heap_property`.
 
@@ -190,7 +195,7 @@ feature -- Commands
 			same_set_of_keys_except_the_removed_key:
 				-- TODO: Except the key being just removed,
 				-- all other keys in the old `array` still exist in the new `array`.
-				True
+				TRUE
 		end
 
 feature -- Auxiliary queries for writing contracts
@@ -246,7 +251,7 @@ feature -- Queries related to heaps
 		ensure
 			correct_result:
 				-- TODO: Constraint on the return value `Result`
-				TRUE
+				Result = across 1 |..| count is i some array[i] ~ a_key end
 		end
 
 feature -- Queries related to binary trees
@@ -366,16 +371,13 @@ feature -- Queries related to binary trees
 		ensure
 			case_of_no_children:
 				-- TODO: When index `i` denotes an external node, what happens to `Result`?
---				not has_left_child (i) and not has_right_child (i)
-				TRUE
+				Result = True
 			case_of_two_children:
 				-- TODO: When index `i` denotes an internal node with both children, what happens to `Result`?
---				has_left_child (i) and has_right_child (i)
-				TRUE
+				Result = True
 			case_of_one_child:
 				-- TODO: When index `i` denotes an internal node with only one child, what happens to `Result`?
---				has_left_child (i) and not has_right_child (i)
-				TRUE
+				Result = True
 		end
 
 invariant

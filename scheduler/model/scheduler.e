@@ -34,14 +34,19 @@ feature -- Constructors
 		require
 			enough_capacity:
 				-- TODO: What's the relation between size of `tasks` and `n`?
-				True
+				new_tasks.count <= n
 
 			-- Assumption: all `priority` values in `new_tasks` are unqiue.
 			-- You are not required to encode this assumption as a precondition for grading,
 			-- but encouraged to try it for exercise.
 		do
 			-- TODO: Complete the implementation.
-
+			create tasks.make (n)
+			across 1 |..| new_tasks.count is i
+			loop
+				tasks.force (new_tasks[i].task, new_tasks[i].priority)
+			end
+			create pq.make (tasks.current_keys, n)
 		ensure
 			scheduler_size_set:
 				-- Completed for you. Do not modify.
@@ -56,7 +61,7 @@ feature -- Queries
 			-- No precondition or postcondition is needed.
 		do
 			-- TODO: Complete the postcondition.
-
+			Result := tasks.count
 		end
 
 	is_empty: BOOLEAN
@@ -65,7 +70,7 @@ feature -- Queries
 			-- No precondition or postcondition is needed.
 		do
 			-- TODO: Complete the postcondition.
-
+			Result := tasks.count = 0
 		end
 
 	priority_exists (priority: INTEGER): BOOLEAN
@@ -74,7 +79,7 @@ feature -- Queries
 			-- No precondition or postcondition is needed.
 		do
 			-- TODO: Complete the postcondition.
-
+			Result := tasks.has_key (priority)
 		end
 
 feature -- Commands
@@ -126,5 +131,5 @@ invariant
 
 	consistent_priorities_and_keys:
 		-- TODO: Every task's priority value is an existing key of the underlying heap.
-		True
+		across tasks.current_keys as i all pq.key_exists (i.item) end
 end
