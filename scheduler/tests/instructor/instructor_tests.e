@@ -153,5 +153,4 @@ feature -- tests
 			Result := s.next_task_to_execute ~ "HeeYeon's Request"
 			check Result end
 		end
-
 end

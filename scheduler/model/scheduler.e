@@ -41,12 +41,13 @@ feature -- Constructors
 			-- but encouraged to try it for exercise.
 		do
 			-- TODO: Complete the implementation.
-			create tasks.make (n)
+			create tasks.make (n) -- Initializing tasks with capacity 'n'
+			-- Adding the tasks from 'new_tasks' to 'tasks'
 			across 1 |..| new_tasks.count is i
 			loop
 				tasks.force (new_tasks[i].task, new_tasks[i].priority)
 			end
-			create pq.make (tasks.current_keys, n)
+			create pq.make (tasks.current_keys, n) -- Initializing priority queue with each task priorities
 		ensure
 			scheduler_size_set:
 				-- Completed for you. Do not modify.
@@ -94,7 +95,8 @@ feature -- Commands
 				not priority_exists (new_task.priority)
 		do
 			-- TODO: Complete the implementation.
-
+			tasks.force (new_task.task, new_task.priority)
+			pq.insert (new_task.priority)
 		end
 
 	next_task_to_execute: detachable TASK
@@ -109,7 +111,7 @@ feature -- Commands
 				not is_empty
 		do
 			-- TODO: Complete the postcondition.
-
+			Result := tasks.at (pq.maximum)
 		end
 
 	execute_next_task
@@ -121,7 +123,8 @@ feature -- Commands
 				not is_empty
 		do
 			-- TODO: Complete the implementation.
-
+			tasks.remove (pq.maximum)
+			pq.remove_maximum
 		end
 
 invariant
