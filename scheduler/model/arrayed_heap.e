@@ -4,7 +4,7 @@ note
 	date: "$Date$"
 	revision: "$Revision$"
 
---TODO: is a max heap postcondition; insert potcondition; remove maximum postcondition
+--TODO: insert postcondition; remove maximum postcondition
 
 
 class
@@ -143,13 +143,15 @@ feature -- Commands
 		do
 			-- TODO: Complete the implementation.
 			-- Watch out for infinite loops!
+
 			count := count + 1 --Increasing count
 			array[count] := new_key  --Adding new key to the end of the array
+
 			--Restoring the heap property using uphead
 			from
 				index := count
 			until
-				array[index] < array[index // 2] or index = 1
+				array[index] < array[index // 2]
 			loop
 				swap := array[index]
 				array[index] := array[index // 2]
@@ -166,7 +168,7 @@ feature -- Commands
 			same_set_of_keys_except_the_new_key:
 				-- TODO: Except `new_key` being just added,
 				-- all other keys in the new `array` already exist in the old `array`.
-				TRUE --across 1 |..| array.count is i all array[i] /= new_key implies (old array.twin)[i] = array[i] end
+				True--across (old array.twin) as i all key_exists (i.item) end
 		end
 
 	remove_maximum
@@ -371,13 +373,13 @@ feature -- Queries related to binary trees
 		ensure
 			case_of_no_children:
 				-- TODO: When index `i` denotes an external node, what happens to `Result`?
-				Result = True
+				(not has_left_child (i)) and (not has_right_child (i)) implies TRUE
 			case_of_two_children:
 				-- TODO: When index `i` denotes an internal node with both children, what happens to `Result`?
-				Result = True
+				(has_left_child (i) and has_right_child (i)) implies (Result = (array[i] > left_child_of (i) and array[i] > right_child_of (i)))
 			case_of_one_child:
 				-- TODO: When index `i` denotes an internal node with only one child, what happens to `Result`?
-				Result = True
+				(has_left_child (i) and not has_right_child (i)) implies (Result = (array[i] > left_child_of (i)))
 		end
 
 invariant
