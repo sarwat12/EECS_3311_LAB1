@@ -149,11 +149,11 @@ feature -- Commands
 			from
 				index := count
 			until
-				array[index] < array[index // 2]
+				array[index] < array[index // 2] or index = 1
 			loop
 				swap := array[index]
 				array[index] := array[index // 2]
-				array[index //2] := swap
+				array[index // 2] := swap
 				index := index // 2
 			end
 		ensure
@@ -166,12 +166,12 @@ feature -- Commands
 			same_set_of_keys_except_the_new_key:
 				-- TODO: Except `new_key` being just added,
 				-- all other keys in the new `array` already exist in the old `array`.
-				--across 1 |..| old array.count is i all key_exists (old array[i]) end
-				TRUE
+				across 1 |..| array.count is i all array[i] /= new_key implies array[i] = array[i] end
 		end
 
 	remove_maximum
 			-- Remove the maximum key from heap, if it is not empty.
+
 		require
 			non_empty_heap:
 				-- Completed for you. Do not modify.
@@ -195,7 +195,7 @@ feature -- Commands
 			same_set_of_keys_except_the_removed_key:
 				-- TODO: Except the key being just removed,
 				-- all other keys in the old `array` still exist in the new `array`.
-				TRUE
+			TRUE
 		end
 
 feature -- Auxiliary queries for writing contracts
