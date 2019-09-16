@@ -166,7 +166,7 @@ feature -- Commands
 			same_set_of_keys_except_the_new_key:
 				-- TODO: Except `new_key` being just added,
 				-- all other keys in the new `array` already exist in the old `array`.
-				across 1 |..| array.count is i all array[i] /= new_key implies array[i] = array[i] end
+				TRUE --across 1 |..| array.count is i all array[i] /= new_key implies (old array.twin)[i] = array[i] end
 		end
 
 	remove_maximum

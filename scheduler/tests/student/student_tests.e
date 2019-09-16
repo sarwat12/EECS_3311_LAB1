@@ -76,7 +76,7 @@ feature -- Tests
 		local
 			h: ARRAYED_HEAP
 		do
-			--comment ("t5: Testing the insertion of a new element in arrayed heap")
+			comment ("t5: Testing the insertion of a new element in arrayed heap")
 			--Add your own test on heap and scheduler.
 			create h.make (<<1, 2, 4>>, 5)
 			Result := h.array ~ <<4, 2, 1, 0, 0>>
