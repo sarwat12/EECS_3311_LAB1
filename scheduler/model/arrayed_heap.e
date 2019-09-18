@@ -151,7 +151,7 @@ feature -- Commands
 			from
 				index := count
 			until
-				array[index] < array[index // 2]
+				array[index] < array[index // 2] or index < 2
 			loop
 				swap := array[index]
 				array[index] := array[index // 2]
@@ -168,7 +168,7 @@ feature -- Commands
 			same_set_of_keys_except_the_new_key:
 				-- TODO: Except `new_key` being just added,
 				-- all other keys in the new `array` already exist in the old `array`.
-				True--across (old array.twin) as i all key_exists (i.item) end
+				TRUE--across 1 |..| array.count is i all (array[i] /= new_key) implies key_exists ((old array.twin)[i]) end
 		end
 
 	remove_maximum
@@ -178,10 +178,13 @@ feature -- Commands
 			non_empty_heap:
 				-- Completed for you. Do not modify.
 				not is_empty
+		local
+			temp: ARRAY[INTEGER]
 		do
 			-- TODO: Complete the implementation.
 			-- Hint: Make use of the `heapify` command.
 			-- Watch out for infinite loops!
+			temp := array.deep_twin
 			array[1] := array[count]   --Swapping the root element with the last element
 			array[count] := 0 --Setting the deleted key with a value of '0'
 			count := count - 1 --Decreasing count
@@ -197,7 +200,9 @@ feature -- Commands
 			same_set_of_keys_except_the_removed_key:
 				-- TODO: Except the key being just removed,
 				-- all other keys in the old `array` still exist in the new `array`.
-			TRUE
+				--across 1 |..| array.count is i all (old Current).key_exists(array[i]) end
+				--across (old array.twin) is i all (i /= 1) implies key_exists((old array.twin)[i]) end
+				TRUE
 		end
 
 feature -- Auxiliary queries for writing contracts

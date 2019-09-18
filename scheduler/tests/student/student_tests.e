@@ -78,17 +78,17 @@ feature -- Tests
 		do
 			comment ("t5: Testing the insertion of a new element in arrayed heap")
 			--Add your own test on heap and scheduler.
---			create h.make (<<1, 2, 4>>, 5)
---			Result := h.array ~ <<4, 2, 1, 0, 0>>
---			check Result end
---			h.insert (3)
---			Result := h.array ~ <<4, 3, 1, 2, 0>> and h.count = 4
-
-			create h.make (<<1, 2, 3>>, 5)
-			Result := h.array ~ <<3, 2, 1, 0, 0>>
+			create h.make (<<1, 2, 4>>, 5)
+			Result := h.array ~ <<4, 2, 1, 0, 0>>
 			check Result end
-			h.insert (4)
+			h.insert (3)
 			Result := h.array ~ <<4, 3, 1, 2, 0>> and h.count = 4
+
+--			create h.make (<<1, 2, 3>>, 5)
+--			Result := h.array ~ <<3, 2, 1, 0, 0>>
+--			check Result end
+--			h.insert (4)
+--			Result := h.array ~ <<4, 3, 1, 2, 0>> and h.count = 4
 		end
 
 	t6: BOOLEAN
