@@ -42,7 +42,7 @@ feature -- Constructor
 				-- TODO: No duplicates of keys are to be added to the heap.
 				not (across a.lower |..| a.upper is i
 					all
-						across a.lower |..| a.upper is j some (i /~ j) and (a[i] ~ a[j]) end
+						across a.lower |..| a.upper is j some ((i /~ j) and (a[i] ~ a[j])) end
 				end)
 		local
 			iindex:INTEGER
