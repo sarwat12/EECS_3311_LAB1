@@ -153,14 +153,10 @@ feature -- Tests
 			comment ("t10: Testing addition of a new task in scheduler")
 			-- Add your own test on heap and scheduler.
 			create s.make_from_array (
-				<<	["Alan's Request"		,   4], ["Mark's Request"         ,   1],
-						["Tom's Request"		,   3], ["SuYeon's Request"     ,   2],
-						["Yuna's Request"		, 16], ["JaeBin's Request"       ,   9],
-						["JiYoon's Request"	, 10], ["SeungYeon's Request", 14],
-						["SunHye's Request"	,   8], ["JiHye's Request"         , 7 ]	>>
-				, 15)
-			s.add_task (["Adam's Request", 15])
-			s.execute_next_task
-			Result := s.next_task_to_execute ~ "Adam's Request"
+				<<	["Physics Assignment", 4], ["Math Assignment", 1],
+					["Biology Assignment",   3], ["Chemistry Assignment", 2],
+					["CS Assignment", 5] >>, 7)
+			s.add_task (["Economics Assignment", 6])
+			Result := s.next_task_to_execute ~ "Economics Assignment" and s.priority_exists (6) and s.count = 6
 		end
 end

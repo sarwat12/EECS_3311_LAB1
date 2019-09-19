@@ -4,8 +4,6 @@ note
 	date: "$Date$"
 	revision: "$Revision$"
 
---TODO: insert postcondition; remove maximum postcondition
-
 
 class
 	ARRAYED_HEAP
@@ -42,10 +40,10 @@ feature -- Constructor
 
 			no_duplicates:
 				-- TODO: No duplicates of keys are to be added to the heap.
-			   	not (across a.lower |..| (a.upper - 1) is i
-			   		all
-			   			across (a.lower + 1) |..| a.upper is j some a[i] ~ a[j] end
-			   	end)
+				not (across a.lower |..| a.upper is i
+					all
+						across a.lower |..| a.upper is j some (i /~ j) and (a[i] ~ a[j]) end
+				end)
 		local
 			iindex:INTEGER
 		do
@@ -168,7 +166,7 @@ feature -- Commands
 			same_set_of_keys_except_the_new_key:
 				-- TODO: Except `new_key` being just added,
 				-- all other keys in the new `array` already exist in the old `array`.
-				TRUE--across 1 |..| array.count is i all (array[i] /= new_key) implies key_exists ((old array.twin)[i]) end
+				across 1 |..| array.count is i all (array[i] /~ new_key) implies (old array.deep_twin).has (array[i]) end
 		end
 
 	remove_maximum
@@ -200,9 +198,7 @@ feature -- Commands
 			same_set_of_keys_except_the_removed_key:
 				-- TODO: Except the key being just removed,
 				-- all other keys in the old `array` still exist in the new `array`.
-				--across 1 |..| array.count is i all (old Current).key_exists(array[i]) end
-				--across (old array.twin) is i all (i /= 1) implies key_exists((old array.twin)[i]) end
-				TRUE
+				across 1 |..| array.count is i all (old array.deep_twin).has(array[i]) end
 		end
 
 feature -- Auxiliary queries for writing contracts
@@ -258,7 +254,7 @@ feature -- Queries related to heaps
 		ensure
 			correct_result:
 				-- TODO: Constraint on the return value `Result`
-				Result = across 1 |..| count is i some array[i] ~ a_key end
+				across 1 |..| count is i all (array[i] = a_key) implies True end
 		end
 
 feature -- Queries related to binary trees
