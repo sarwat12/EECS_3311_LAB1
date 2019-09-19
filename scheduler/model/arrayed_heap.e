@@ -151,13 +151,13 @@ feature -- Commands
 			from
 				index := count
 			until
-				array[index] < array[index // 2] or index < 2
+				(index = 1) or (array[index] < array[index // 2])
 			loop
 				swap := array[index]
 				array[index] := array[index // 2]
 				array[index // 2] := swap
 				index := index // 2
-			end 
+			end
 		ensure
 			-- Heap property is maintained, see invariant `heap_property`.
 

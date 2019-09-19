@@ -74,7 +74,7 @@ feature -- Tests
 
 	t5: BOOLEAN
 		local
-			h: ARRAYED_HEAP
+			h, k: ARRAYED_HEAP
 		do
 			comment ("t5: Testing the insertion of a new element in arrayed heap")
 			--Add your own test on heap and scheduler.
@@ -85,11 +85,12 @@ feature -- Tests
 			Result := h.array ~ <<4, 3, 1, 2, 0>> and h.count = 4
 			check Result end
 
---			create h.make (<<1, 2, 3>>, 5)
---			Result := h.array ~ <<3, 2, 1, 0, 0>>
---			check Result end
---			h.insert (4)
---			Result := h.array ~ <<4, 3, 1, 2, 0>> and h.count = 4
+			create k.make (<<1, 2, 3>>, 5)
+			Result := k.array ~ <<3, 2, 1, 0, 0>>
+			check Result end
+			k.insert (4)
+			print(k.array)
+			Result := k.array ~ <<4, 3, 1, 2, 0>> and k.count = 4
 		end
 
 	t6: BOOLEAN
