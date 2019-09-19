@@ -83,6 +83,7 @@ feature -- Tests
 			check Result end
 			h.insert (3)
 			Result := h.array ~ <<4, 3, 1, 2, 0>> and h.count = 4
+			check Result end
 
 --			create h.make (<<1, 2, 3>>, 5)
 --			Result := h.array ~ <<3, 2, 1, 0, 0>>

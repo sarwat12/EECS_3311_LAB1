@@ -157,7 +157,7 @@ feature -- Commands
 				array[index] := array[index // 2]
 				array[index // 2] := swap
 				index := index // 2
-			end
+			end 
 		ensure
 			-- Heap property is maintained, see invariant `heap_property`.
 
@@ -367,11 +367,11 @@ feature -- Queries related to binary trees
 			if
 				has_left_child (i) and has_right_child (i)
 			then
-				Result := array[i] > left_child_of (i) and array[i] > right_child_of (i)
+				Result := array[i] > left_child_of (i) and array[i] > right_child_of (i) and is_a_max_heap (2*i) and is_a_max_heap ((2*i)+1)
 			elseif
 				has_left_child (i) and not has_right_child (i)
 			then
-				Result := array[i] > left_child_of (i)
+				Result := array[i] > left_child_of (i) and is_a_max_heap (2*i)
 			else
 				Result := True
 			end
